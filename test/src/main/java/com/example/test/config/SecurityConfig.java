@@ -35,8 +35,6 @@ public class SecurityConfig {
                                 .decoder(jwtDecoder())
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
-
-
                 );
 
         return http.build();

@@ -5,6 +5,7 @@ import com.example.test.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ContactController {
     }
 
     @GetMapping("/{id}")
+
     public ResponseEntity<Contacts> getContactById(@PathVariable Integer id) {
         Optional<Contacts> contact = contactService.getContactById(id);
         return contact.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,5 +53,21 @@ public class ContactController {
         }
         contactService.deleteContact(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Hello");
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> sayHelloToAdmin() {
+        return ResponseEntity.ok("Hello Admin");
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<String> sayHelloToUser() {
+        return ResponseEntity.ok("Hello User");
     }
 }
